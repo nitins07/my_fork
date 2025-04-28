@@ -31,12 +31,12 @@ list(APPEND PROFILER_SOURCES profile_gemm_universal_preshuffle.cpp)
 #endif()
 
 set(PROFILER_EXECUTABLE ckProfiler)
-
+add_executable(${PROFILER_EXECUTABLE} ${PROFILER_SOURCES})
 target_link_libraries(${PROFILER_EXECUTABLE} PRIVATE utility getopt::getopt)
 
 #target_link_libraries(${PROFILER_EXECUTABLE} PRIVATE device_gemm_multiply_multiply_instance)
 
-add_executable(${PROFILER_EXECUTABLE} ${PROFILER_SOURCES})
+# add_executable(${PROFILER_EXECUTABLE} ${PROFILER_SOURCES})
 target_compile_options(${PROFILER_EXECUTABLE} PRIVATE -Wno-global-constructors)
 # flags to compress the library
 if(NOT WIN32 AND ${hip_VERSION_FLAT} GREATER 600241132)
