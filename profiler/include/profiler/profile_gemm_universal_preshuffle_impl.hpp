@@ -273,9 +273,7 @@ bool profile_gemm_universal_impl(int do_verification,
     
         preShuffleBuffer(b_k_n_permute.mData.data(), b0_preshuffled.mData.data(), N, K, NPerXdl);
     
-        b0_device_buf.ToDevice(b0_preshuffled.mData.data());
-
-        b_device_buf.ToDevice(b_k_n_permute.mData.data());
+        b_device_buf.ToDevice(b0_preshuffled.mData.data());
 
         std::vector<int> kbatch_list = {1, 2, 4, 8, 16, 19, 32, 38};
 
