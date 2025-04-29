@@ -34,11 +34,6 @@ template <typename ADataType,
           typename BLayout,
           typename CLayout>
 
-using F16  = ck::half_t;
-using BF16 = ck::bhalf_t;
-using FP8  = ck::f8_t;
-using F32  = float;
-
 void preShuffleBuffer(const FP8* src, FP8* dst, int N, int K, int NXdl)
 {
     int KPack = 16;
