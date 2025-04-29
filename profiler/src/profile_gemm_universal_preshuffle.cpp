@@ -227,4 +227,4 @@ int profile_gemm_universal(int argc, char* argv[])
     }
 }
 
-REGISTER_PROFILER_OPERATION(OP_NAME, OP_DESC, profile_gemm_universal_preshuffle);
+REGISTER_PROFILER_OPERATION(OP_NAME, OP_DESC, profile_gemm_universal);
