@@ -156,7 +156,7 @@ bool profile_gemm_universal_impl(int do_verification,
 
     // get device op instances
     const auto op_ptrs = ck::tensor_operation::device::instance::DeviceOperationInstanceFactory<
-        DeviceOp>::GetInstances();
+        DeviceOpInstance>::GetInstances();
 
     std::cout << "found " << op_ptrs.size() << " instances" << std::endl;
 
