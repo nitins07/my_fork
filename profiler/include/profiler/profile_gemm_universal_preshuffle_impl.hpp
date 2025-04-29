@@ -67,7 +67,7 @@ bool profile_gemm_universal_impl(int do_verification,
     Tensor<ADataType> a_m_k(f_host_tensor_descriptor(M, K, StrideA, ALayout{}));
     Tensor<BDataType> b_k_n(f_host_tensor_descriptor(K, N, StrideB, BLayout{}));
     Tensor<BDataType> b_k_n_permute(f_host_tensor_descriptor(K, N, StrideB, BLayout{}));
-    Tensor<BDataType> b_k_n_permute_preshuffled(
+    Tensor<BDataType> b_preshuffled(
         f_host_tensor_descriptor(K, N, StrideB, BLayout{}));
     Tensor<CDataType> c_m_n_host_result(f_host_tensor_descriptor(M, N, StrideC, CLayout{}));
     Tensor<CDataType> c_m_n_device_result(f_host_tensor_descriptor(M, N, StrideC, CLayout{}));
@@ -271,9 +271,9 @@ bool profile_gemm_universal_impl(int do_verification,
 
         int NPerXdl = device_op.GetPreShuffleParameters();
     
-        preShuffleBuffer(b_k_n_permute.mData.data(), b0_preshuffled.mData.data(), N, K, NPerXdl);
+        preShuffleBuffer(b_k_n_permute.mData.data(), b_preshuffled.mData.data(), N, K, NPerXdl);
     
-        b_device_buf.ToDevice(b0_preshuffled.mData.data());
+        b_device_buf.ToDevice(b_preshuffled.mData.data());
 
         std::vector<int> kbatch_list = {1, 2, 4, 8, 16, 19, 32, 38};
 
