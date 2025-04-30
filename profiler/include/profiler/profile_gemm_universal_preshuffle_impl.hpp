@@ -35,6 +35,8 @@ template <typename ADataType,
           typename BLayout,
           typename CLayout>
 
+using FP8  = ck::f8_t;
+
 bool profile_gemm_universal_impl(int do_verification,
                                  int init_method,
                                  bool do_log,
