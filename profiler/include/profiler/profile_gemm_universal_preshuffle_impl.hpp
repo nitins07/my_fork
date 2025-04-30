@@ -417,6 +417,7 @@ bool profile_gemm_universal_impl(int do_verification,
 
     return pass;
 }
+template <typename T>
 void preShuffleBuffer(const T* src, T* dst, int N, int K, int NXdl)
 {
     int KPack = 16;
