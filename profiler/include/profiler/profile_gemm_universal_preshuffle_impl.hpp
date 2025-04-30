@@ -118,7 +118,7 @@ bool profile_gemm_universal_impl(int do_verification,
 
     a_device_buf.ToDevice(a_m_k.mData.data());
 
-    using DeviceOpInstance = ck::tensor_operation::device::DeviceGemm_Xdl_CShuffleV3_BPreshuffle<ALayout,
+    using DeviceOp = ck::tensor_operation::device::DeviceGemm_Xdl_CShuffleV3_BPreshuffle<ALayout,
                                                                 BLayout,
                                                                 CLayout,
                                                                 ADataType,
@@ -130,7 +130,7 @@ bool profile_gemm_universal_impl(int do_verification,
 
     // get device op instances
     const auto op_ptrs = ck::tensor_operation::device::instance::DeviceOperationInstanceFactory<
-       DeviceOpInstance>::GetInstances();
+       DeviceOp>::GetInstances();
 
     std::cout << "found " << op_ptrs.size() << " instances" << std::endl;
 
@@ -241,7 +241,7 @@ bool profile_gemm_universal_impl(int do_verification,
             b_k_n_permute = b_k_n;
         }
 
-        auto device_op = DeviceOpInstance{};
+        auto device_op = DeviceOp{};
 
         int NPerXdl = device_op.GetPreShuffleParameters();
         preShuffleBuffer<BDataType>(b_k_n_permute.mData.data(), b_preshuffled.mData.data(), N, K, NPerXdl);
