@@ -26,6 +26,9 @@
 namespace ck {
 namespace profiler {
 
+template <typename T>
+void preShuffleBuffer(const T* src, T* dst, int N, int K, int NXdl);
+
 template <typename ADataType,
           typename BDataType,
           typename ComputeDataType,
@@ -34,9 +37,6 @@ template <typename ADataType,
           typename ALayout,
           typename BLayout,
           typename CLayout>
-
-using FP8  = ck::f8_t;
-
 bool profile_gemm_universal_impl(int do_verification,
                                  int init_method,
                                  bool do_log,
@@ -103,37 +103,6 @@ bool profile_gemm_universal_impl(int do_verification,
         a_m_k.GenerateTensorValue(GeneratorTensor_3<ADataType>{0.0, 1.0});
         b_k_n.GenerateTensorValue(GeneratorTensor_2<BDataType>{-2, 2});
     }
-
-void preShuffleBuffer(const FP8* src, FP8* dst, int N, int K, int NXdl)
-{
-    int KPack = 16;
-    int NLane = NXdl;
-    int KLane = 64 / NLane;
-
-    int K0 = K / (KLane * KPack);
-    // K -> K0 KLane KPack
-    // N -> N0 NLane
-    // N, K -> N0 K0 KLane NLane KPack
-    int tempk;
-    for(int n = 0; n < N; ++n)
-    {
-        for(int k = 0; k < K; ++k)
-        {
-            int n0 = n / NLane;
-            int n1 = n % NLane;
-
-            int k0 = k / (KLane * KPack);
-            tempk  = k % (KLane * KPack);
-            int k1 = tempk / KPack;
-            int k2 = tempk % KPack;
-
-            int outputIndex = n0 * KPack * NLane * KLane * K0 + k0 * KPack * NLane * KLane +
-                              k1 * KPack * NLane + n1 * KPack + k2;
-
-            dst[outputIndex] = src[n * K + k];
-        }
-    }
-}
 
     using AElementOp = ck::tensor_operation::element_wise::PassThrough;
     using BElementOp = ck::tensor_operation::element_wise::PassThrough;
@@ -275,9 +244,8 @@ void preShuffleBuffer(const FP8* src, FP8* dst, int N, int K, int NXdl)
         auto device_op = DeviceOpInstance{};
 
         int NPerXdl = device_op.GetPreShuffleParameters();
-    
-        preShuffleBuffer(b_k_n_permute.mData.data(), b_preshuffled.mData.data(), N, K, NPerXdl);
-    
+        preShuffleBuffer<BDataType>(b_k_n_permute.mData.data(), b_preshuffled.mData.data(), N, K, NPerXdl);
+
         b_device_buf.ToDevice(b_preshuffled.mData.data());
 
         std::vector<int> kbatch_list = {1, 2, 4, 8, 16, 19, 32, 38};
@@ -449,6 +417,37 @@ void preShuffleBuffer(const FP8* src, FP8* dst, int N, int K, int NXdl)
 
     return pass;
 }
+void preShuffleBuffer(const T* src, T* dst, int N, int K, int NXdl)
+{
+    int KPack = 16;
+    int NLane = NXdl;
+    int KLane = 64 / NLane;
+
+    int K0 = K / (KLane * KPack);
+    // K -> K0 KLane KPack
+    // N -> N0 NLane
+    // N, K -> N0 K0 KLane NLane KPack
+    int tempk;
+    for(int n = 0; n < N; ++n)
+    {
+        for(int k = 0; k < K; ++k)
+        {
+            int n0 = n / NLane;
+            int n1 = n % NLane;
+
+            int k0 = k / (KLane * KPack);
+            tempk  = k % (KLane * KPack);
+            int k1 = tempk / KPack;
+            int k2 = tempk % KPack;
+
+            int outputIndex = n0 * KPack * NLane * KLane * K0 + k0 * KPack * NLane * KLane +
+                              k1 * KPack * NLane + n1 * KPack + k2;
+
+            dst[outputIndex] = src[n * K + k];
+        }
+    }
+}
+
 
 } // namespace profiler
 } // namespace ck
