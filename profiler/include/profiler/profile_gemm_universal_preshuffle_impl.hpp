@@ -15,7 +15,7 @@
 #include "ck/tensor_operation/gpu/element/element_wise_operation.hpp"
 
 #include "ck/library/tensor_operation_instance/gpu/gemm_universal.hpp"
-//#include "ck/library/tensor_operation_instance/gpu/gemm_universal_preshuffle.hpp"
+#include "ck/library/tensor_operation_instance/gpu/gemm_universal_preshuffle.hpp"
 
 #include "ck/library/utility/check_err.hpp"
 #include "ck/library/utility/device_memory.hpp"
@@ -119,7 +119,7 @@ bool profile_gemm_universal_impl(int do_verification,
 
     a_device_buf.ToDevice(a_m_k.mData.data());
 
-    using DeviceOp = ck::tensor_operation::device::DeviceGemmV2BPreshuffle<ALayout,
+    using DeviceOp = ck::tensor_operation::device::DeviceGemm_Xdl_CShuffleV3_BPreshuffle<ALayout,
                                                                 BLayout,
                                                                 CLayout,
                                                                 ADataType,
