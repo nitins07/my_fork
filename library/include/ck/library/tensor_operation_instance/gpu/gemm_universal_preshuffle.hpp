@@ -32,7 +32,7 @@ template <typename ADataType,
           typename BLayout,
           typename CLayout>
 struct DeviceOperationInstanceFactory<
-    ck::tensor_operation::device::DeviceGemmV2BPreshuffle<ALayout,
+    ck::tensor_operation::device::DeviceGemm_Xdl_CShuffleV3_BPreshuffle<ALayout,
                                                BLayout,
                                                CLayout,
                                                ADataType,
@@ -42,7 +42,7 @@ struct DeviceOperationInstanceFactory<
                                                ck::tensor_operation::element_wise::PassThrough,
                                                ck::tensor_operation::element_wise::PassThrough>>
 {
-    using DeviceOp = DeviceGemmV2BPreshuffle<ALayout,
+    using DeviceOp = DeviceGemm_Xdl_CShuffleV3_BPreshuffle<ALayout,
                                   BLayout,
                                   CLayout,
                                   ADataType,
