@@ -119,7 +119,7 @@ bool profile_gemm_universal_impl(int do_verification,
 
     a_device_buf.ToDevice(a_m_k.mData.data());
 
-    using DeviceOp = ck::tensor_operation::device::DeviceGemm_Xdl_CShuffleV3_BPreshuffle<ALayout,
+    using DeviceOp = ck::tensor_operation::device::DeviceGemmV2BPreshuffle<ALayout,
                                                                 BLayout,
                                                                 CLayout,
                                                                 ADataType,
