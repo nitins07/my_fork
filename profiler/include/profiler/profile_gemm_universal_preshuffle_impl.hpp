@@ -241,10 +241,7 @@ bool profile_gemm_universal_impl(int do_verification,
         {
             b_k_n_permute = b_k_n;
         }
-
-        auto device_op = DeviceOp{};
-
-        int NPerXdl = device_op.GetPreShuffleParameters();
+        int NPerXdl = op_ptr->GetPreShuffleParameters();
         preShuffleBuffer<BDataType>(b_k_n_permute.mData.data(), b_preshuffled.mData.data(), N, K, NPerXdl);
 
         b_device_buf.ToDevice(b_preshuffled.mData.data());
