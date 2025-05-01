@@ -55,6 +55,7 @@ struct DeviceOperationInstanceFactory<
     static auto GetInstances()
     {
         std::vector<std::unique_ptr<DeviceOp>> op_ptrs;
+/*
 
 #ifdef CK_USE_WMMA
 #ifdef CK_ENABLE_FP16
@@ -130,6 +131,7 @@ struct DeviceOperationInstanceFactory<
         }
 #endif
 #endif // CK_USE_WMMA
+*/
 
 #ifdef CK_USE_XDL
 #ifdef CK_ENABLE_FP16
