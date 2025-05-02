@@ -156,4 +156,4 @@ list(APPEND GEMM_UNIVERSAL_INSTANCES
 
 
 add_instance_library(device_gemm_universal_instance ${GEMM_UNIVERSAL_INSTANCES})
-add_instance_library(device_gemm_universal_preshuffle_instance ${GEMM_UNIVERSAL_INSTANCES})
+# add_instance_library(device_gemm_universal_preshuffle_instance ${GEMM_UNIVERSAL_INSTANCES})
