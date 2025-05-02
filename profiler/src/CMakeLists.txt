@@ -47,8 +47,8 @@ endif()
 
 
 #if(SUPPORTED_GPU_TARGETS MATCHES "gfx9")
-target_link_libraries(${PROFILER_EXECUTABLE} PRIVATE 
-  device_gemm_universal_preshuffle_instance)
+#target_link_libraries(${PROFILER_EXECUTABLE} PRIVATE 
+ # device_gemm_universal_preshuffle_instance)
 #endif()
 
 rocm_install(TARGETS ${PROFILER_EXECUTABLE} COMPONENT profiler)
